@@ -36,11 +36,16 @@ AddEventHandler("Open:Case", function(data)
 	end
 	local random = math.random(1,sum)
 	SetNuiFocus(true,true)
-	SendNUIMessage({
+        local imageSource = Config["image_source"]
+        if imageSource == nil or imageSource == "" then
+                imageSource = ("nui://%s/html/img/"):format(GetCurrentResourceName())
+        end
+
+        SendNUIMessage({
         type = "ui",
-		data = Config.Case[data].list,
-		img = Config["image_source"],
-		win = draw[random]
+                data = Config.Case[data].list,
+                img = imageSource,
+                win = draw[random]
     })
 	Wait(9000)
 	if draw[random].item then

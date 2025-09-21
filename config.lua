@@ -112,7 +112,8 @@ reduction = 0.75
 taxe = 100 * reduction
 
 ------------------------------------------------------------------------------------------------
-Config["image_source"] = "nui://boutiquev3/html/img/"
+-- Leave empty to automatically use the current resource name (nui://<resource>/html/img/)
+Config["image_source"] = ""
 
 Config.Chance = {
 	[1] = { name = "Common", rate = 50 }, -- tier 1
