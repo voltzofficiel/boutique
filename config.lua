@@ -51,9 +51,10 @@ Config = {
 
 	CustomPrice = 200, -- Prix de la full custom
 
-	ListVeh = {
-		{category = "↓ Import ↓"}, -- exemple of categorie
-		{img = "bolide", name = "Bugatti Bolide" , model = "rmodbugatti", point = 1000, place = 2, vitesse = 450},
+        ListVeh = {
+                -- You can use either a texture name (from your RageUI dictionary) or a direct http(s) URL in the `img` field.
+                {category = "↓ Import ↓"}, -- exemple of categorie
+                {img = "bolide", name = "Bugatti Bolide" , model = "rmodbugatti", point = 1000, place = 2, vitesse = 450},
 		{img = "voiturenoire", name = "La Voiture Noire" , model = "rmodbolide", point = 1000, place = 2, vitesse = 449},
 		{img = "charger", name = "Dodge Charger 69" , model = "rmodcharger69", point = 1000, place = 2, vitesse = 448},
 		{img = "f12", name = "Ferrari F12 TDF" , model = "rmodf12tdf", point = 1000, place = 2, vitesse = 447},
@@ -70,8 +71,9 @@ Config = {
 	------------------------------------------------------------------------------------------------
 
 	ActiveWeapon = true, 
-	WeaponList = {
-		{category = "↓ Weapon ↓"}, -- exemple of categorie
+        WeaponList = {
+                -- The `img` value accepts either a RageUI texture name or a direct http(s) URL.
+                {category = "↓ Weapon ↓"}, -- exemple of categorie
 		{img = "Screenshot_127", name = "Couteau" , model = "weapon_knife", point = 10},
 		{img = "baseball-bat", name = "Bat de baseball" , model = "weapon_bat", point = 10},
 		{img = "hachet", name = "Hachette" , model = "weapon_machete", point = 10},
@@ -87,8 +89,9 @@ Config = {
 	------------------------------------------------------------------------------------------------
 
 	ActiveMoney = true, 
-	MoneyList = {
-		{category = "↓ Money Pack ↓"}, -- exemple of categorie
+        MoneyList = {
+                -- The `img` value accepts either a RageUI texture name or a direct http(s) URL.
+                {category = "↓ Money Pack ↓"}, -- exemple of categorie
 		{img = "money", name = "10,000$" , model = 10000, point = 500},
 		{img = "money", name = "20,000$" , model = 20000, point = 1000},
 		{img = "money", name = "45,000$" , model = 45000, point = 1500},
@@ -98,8 +101,9 @@ Config = {
 	------------------------------------------------------------------------------------------------
 
 	ActiveCaisse = true, 
-	LesCaisse = {
-		{category = "↓ Box Pack ↓"}, -- exemple of categorie
+        LesCaisse = {
+                -- The `img` value accepts either a RageUI texture name or a direct http(s) URL.
+                {category = "↓ Box Pack ↓"}, -- exemple of categorie
 		{img = "gold_case", name = "Gold Box" , item = "gold_case", point = 1000, lootdesc = "Bugatti, AK-47, 75,000$"},
 		{img = "ruby_case", name = "Ruby Box" , item = "ruby_case", point = 750, lootdesc = "BMW M5, SMG, 50,000$"},
 		{img = "diamond_case", name = "Diamond Box" , item = "diamond_case", point = 500, lootdesc = "Nissan Skyline, Pistolet de combat, 25,000$"},
