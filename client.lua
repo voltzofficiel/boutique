@@ -1,5 +1,72 @@
 ESX = nil
 
+local urlTextureDictName = "boutique_url_textures"
+local urlRuntimeTxd = CreateRuntimeTxd(urlTextureDictName)
+local urlTextureCache = {}
+local urlTextureIndex = 0
+
+local function isHttpUrl(value)
+    if type(value) ~= "string" or value == "" then
+        return false
+    end
+
+    local lowerValue = string.lower(value)
+    return lowerValue:match("^https?://") ~= nil
+end
+
+local function ensureItemTexture(entry)
+    if type(entry) ~= "table" then
+        return
+    end
+
+    if entry.textureDict and entry.textureName then
+        return
+    end
+
+    if type(entry.img) ~= "string" or entry.img == "" then
+        return
+    end
+
+    if isHttpUrl(entry.img) and urlRuntimeTxd then
+        local cached = urlTextureCache[entry.img]
+
+        if cached == nil then
+            local duiObject = CreateDui(entry.img, 512, 512)
+
+            if duiObject then
+                local duiHandle = GetDuiHandle(duiObject)
+                urlTextureIndex = urlTextureIndex + 1
+                local textureName = ("url_img_%s"):format(urlTextureIndex)
+                CreateRuntimeTextureFromDuiHandle(urlRuntimeTxd, textureName, duiHandle)
+                cached = { dict = urlTextureDictName, name = textureName, dui = duiObject }
+                urlTextureCache[entry.img] = cached
+            else
+                urlTextureCache[entry.img] = false
+            end
+        end
+
+        if cached and cached ~= false then
+            entry.textureDict = cached.dict
+            entry.textureName = cached.name
+        end
+    else
+        entry.textureDict = entry.textureDict or "RageUI"
+        entry.textureName = entry.textureName or entry.img
+    end
+end
+
+AddEventHandler('onResourceStop', function(resourceName)
+    if resourceName ~= GetCurrentResourceName() then
+        return
+    end
+
+    for _, data in pairs(urlTextureCache) do
+        if data and data.dui then
+            DestroyDui(data.dui)
+        end
+    end
+end)
+
 Citizen.CreateThread(function()
     while Config == nil do
         Citizen.Wait(0)
@@ -176,8 +243,11 @@ function OpenBoutique()
 				else 
                 
                     RageUI.ButtonWithStyle(v.name, nil, { RightLabel = Config.Menu.ColorText[1]..""..tostring(v.point)..""..Config.Menu.ColorText[2].." "..Config.Menu.CreditName },true, function(Hovered, Active, Selected)
-                        if (Active) then 
-                            RenderSprite("RageUI", v.img, 0, 565, 430, 200, 100)
+                        if (Active) then
+                            ensureItemTexture(v)
+                            if v.textureDict and v.textureName then
+                                RenderSprite(v.textureDict, v.textureName, 0, 565, 430, 200, 100)
+                            end
                         end
                         if (Selected) then
                             curentvehicle_name = v.name
@@ -279,10 +349,13 @@ function OpenBoutique()
 					RageUI.Separator(v.category)
 				else 
 
-				RageUI.ButtonWithStyle(v.name, nil, {RightLabel = Config.Menu.ColorText[1]..""..tostring(v.point)..""..Config.Menu.ColorText[2].." "..Config.Menu.CreditName}, true, function(Hovered, Active, Selected)
-                    if (Active) then 
-						RenderSprite("RageUI", v.img, 0, 530, 430, 200, 100)
-					end
+                                RageUI.ButtonWithStyle(v.name, nil, {RightLabel = Config.Menu.ColorText[1]..""..tostring(v.point)..""..Config.Menu.ColorText[2].." "..Config.Menu.CreditName}, true, function(Hovered, Active, Selected)
+                    if (Active) then
+                                                ensureItemTexture(v)
+                                                if v.textureDict and v.textureName then
+                                                        RenderSprite(v.textureDict, v.textureName, 0, 530, 430, 200, 100)
+                                                end
+                                        end
                     if (Selected) then
 
 						curentvehicle_name = v.name
@@ -322,9 +395,12 @@ function OpenBoutique()
 					RageUI.Separator(caisse.category)
 				else 
                     
-				RageUI.ButtonWithStyle(caisse.name, "~g~Loot disponible : "..caisse.lootdesc, {RightLabel = Config.Menu.ColorText[1]..""..tostring(caisse.point)..""..Config.Menu.ColorText[2].." "..Config.Menu.CreditName}, true , function(Hovered, Active, Selected)
-                    if (Active) then 
-                        RenderSprite("RageUI", caisse.img, 0, 450, 400, 200, 100)
+                                RageUI.ButtonWithStyle(caisse.name, "~g~Loot disponible : "..caisse.lootdesc, {RightLabel = Config.Menu.ColorText[1]..""..tostring(caisse.point)..""..Config.Menu.ColorText[2].." "..Config.Menu.CreditName}, true , function(Hovered, Active, Selected)
+                    if (Active) then
+                        ensureItemTexture(caisse)
+                        if caisse.textureDict and caisse.textureName then
+                            RenderSprite(caisse.textureDict, caisse.textureName, 0, 450, 400, 200, 100)
+                        end
                     end
                     if (Selected) then
 						name = caisse.name
@@ -369,8 +445,11 @@ function OpenBoutique()
 
 
                     RageUI.ButtonWithStyle(v.name, nil, {RightLabel = Config.Menu.ColorText[1]..""..tostring(v.point)..""..Config.Menu.ColorText[2].." "..Config.Menu.CreditName}, true , function(Hovered, Active, Selected)
-                        if (Active) then 
-                            RenderSprite("RageUI", v.img, 0, 350, 430, 200, 100)
+                        if (Active) then
+                            ensureItemTexture(v)
+                            if v.textureDict and v.textureName then
+                                RenderSprite(v.textureDict, v.textureName, 0, 350, 430, 200, 100)
+                            end
                         end
                         if Selected then
                             curentvehicle_name = v.name
