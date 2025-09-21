@@ -1,14 +1,19 @@
-if Config.Framework.ESX_Legacy then 
-    ESX = exports[Config.Framework.ExtendedName]:getSharedObject()
-else
-    ESX = nil
-    Citizen.CreateThread(function()
+ESX = nil
+
+Citizen.CreateThread(function()
+    while Config == nil do
+        Citizen.Wait(0)
+    end
+
+    if Config.Framework.ESX_Legacy then
+        ESX = exports[Config.Framework.ExtendedName]:getSharedObject()
+    else
         while ESX == nil do
             TriggerEvent(Config.Framework.SharedEvent, function(obj) ESX = obj end)
             Citizen.Wait(500)
         end
-    end)
-end
+    end
+end)
 
 local IsDead = false
 local GarageOption = false
